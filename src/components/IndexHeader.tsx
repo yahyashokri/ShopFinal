@@ -7,9 +7,6 @@ import { useEffect, useState } from 'react'
 
 const IndexHeader = () => {
 
- 
-
-  const signOut = async () => await supabaseClient.auth.signOut()
   
   const [session, setSession] = useState(() => { 
     const savedSession = localStorage.getItem('supabaseSession');
@@ -22,7 +19,7 @@ const IndexHeader = () => {
             else if (event === "SIGNED_OUT")
                { setSession(false);
                  localStorage.removeItem('supabaseSession'); } }); 
-                 return () => { subscription?.unsubscribe(); }; },
+                 return () => { subscription?.subscribe(); }; },
                   []);
   return (
     <>
@@ -68,7 +65,7 @@ const IndexHeader = () => {
         </p>
        { !session ?
        <Link className='mx-2 text-gray-700' href={'/login'}>Account</Link>:
-       <button onClick={signOut} className='mx-2 text-gray-700 mb-4'>sign out</button>
+       <Link className='mx-2 text-gray-700' href={'/dashboard'}>Account</Link>
        }
         <Link className='mx-2 text-gray-700' href={'/'}>Cart</Link>
 

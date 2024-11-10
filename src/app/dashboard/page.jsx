@@ -1,5 +1,5 @@
 import { supabaseServerClient } from '@/api/config'
-import Dashboard from '@/components/Dashboard'
+import Dashboard from '@/components/Dashboard.jsx'
 import { cookies } from 'next/headers'
 
 

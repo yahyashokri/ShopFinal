@@ -3,20 +3,7 @@ import { supabaseClient } from '@/api/config';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react'
 
-interface users{
-    user : object;
-    error : string | undefined;
-}
-
-interface user {
-    id: string;
-    email: string;
-    role: string;
-    created_at: string;
-    Address: string;
-    full_name: string;
-}
-const Dashboard = (users: users, error: string ) => {
+const Dashboard = (users, error ) => {
     const router = useRouter()
     const signOut = async (e) => {
         e.preventDefault();
@@ -25,21 +12,19 @@ const Dashboard = (users: users, error: string ) => {
         console.log('done')
     }
     console.warn(error)
-    const user : user = users.user[0];
-    const email = user?.email
+    const user = users.user[0];
     const fullName = user["full-name"];
-    const address = user?.Address
+    const address = user.Address
 
-    const emailRef = useRef<HTMLInputElement>(null);
-    const fullNameRef = useRef<HTMLInputElement>(null);
-    const addressRef = useRef<HTMLInputElement>(null);
+    const phoneRef = useRef(null);
+    const fullNameRef = useRef(null);
+    const addressRef = useRef(null);
 
     
     const handleUpdate = async (e) => {
         e.preventDefault();
-        console.log(emailRef.current?.value,addressRef.current?.value,fullNameRef.current?.value)
+        console.log(phoneRef.current?.value,addressRef.current?.value,fullNameRef.current?.value)
         const nameVal = fullNameRef.current?.value
-        const emailVal = emailRef.current?.value
         const addressVal= addressRef.current?.value
 
         if(addressVal === ''){
@@ -52,20 +37,9 @@ const Dashboard = (users: users, error: string ) => {
                 .update({ Address: addressVal })
                 .eq('Address', address)
                 .select()
-                console.log(addressVal)
+                console.log(data , error)
             }
-            if(emailVal === ''){
-                console.log('email did not update')
-            }
-                else{
-    
-                    const { data, error } = await supabaseClient
-                    .from('users')
-                    .update({ email: emailVal })
-                    .eq('email', email)
-                    .select()
-                    console.log(emailVal)
-                }
+        
                 if(nameVal === ''){
                     console.log('name did not update')
                 }
@@ -76,7 +50,7 @@ const Dashboard = (users: users, error: string ) => {
                         .update({ 'full-name': nameVal })
                         .eq('full-name', fullName)
                         .select()
-                        console.log(nameVal)
+                        console.log(data , error)
                     }
     }
 
@@ -88,9 +62,7 @@ const Dashboard = (users: users, error: string ) => {
            <div className="mb-4">
            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Your full name</label>
           <input ref={fullNameRef}  type="text" id="name" placeholder={fullName} className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email address</label>
-            <input ref={emailRef}  type="email" id="email" placeholder={email} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-             </div> <div className="mb-6">
+          </div> <div className="mb-6">
                <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Your address</label>
            <input ref={addressRef}  type="text" id="address" placeholder={address} className="shadow appearance-none border rounded w-full h-28 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                </div>
