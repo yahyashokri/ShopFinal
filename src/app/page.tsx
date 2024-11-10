@@ -32,7 +32,8 @@ const page = async () => {
                  <ProductCard 
                  image={product.imageurl}
                   title={product.title}
-                   categories={product.categories}
+                  category={product.category}
+                  description={product.description}
                     price={product.price} 
                     rating={product.rating} /> 
               </div>

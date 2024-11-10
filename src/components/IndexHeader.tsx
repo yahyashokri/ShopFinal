@@ -1,8 +1,29 @@
+'use client'
+import { supabaseClient } from '@/api/config'
 import Link from 'next/link'
-import React from 'react'
+import { useEffect, useState } from 'react'
+
 
 
 const IndexHeader = () => {
+
+ 
+
+  const signOut = async () => await supabaseClient.auth.signOut()
+  
+  const [session, setSession] = useState(() => { 
+    const savedSession = localStorage.getItem('supabaseSession');
+     return savedSession ? JSON.parse(savedSession) : false; });
+      useEffect(() => { 
+        const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event) => 
+          { if (event === "SIGNED_IN")
+         { setSession(true);
+           localStorage.setItem('supabaseSession', JSON.stringify(true)); }
+            else if (event === "SIGNED_OUT")
+               { setSession(false);
+                 localStorage.removeItem('supabaseSession'); } }); 
+                 return () => { subscription?.unsubscribe(); }; },
+                  []);
   return (
     <>
     <section className='fixed top-0 z-10'>
@@ -15,7 +36,6 @@ const IndexHeader = () => {
             +98 990 776 2094 
             </p>
             <div className='w-screen flex justify-center'>
-
             <p className=' mt-1 '>Get 50% off on selected items | Shop Now</p>
             </div>
             </div>
@@ -40,13 +60,16 @@ const IndexHeader = () => {
     <Link className='mb-4 text-gray-700 mx-2' href={'/'}>Home</Link><Link className='mb-4 text-gray-700 mx-2' href={'/'}>Category</Link><Link className='mb-4 text-gray-700 mx-2' href={'/'}>Products</Link><Link className='mb-4 text-gray-700 mx-2' href={'/'}>About us</Link>
       </div>
       <div className='mr-8 flex'>
-        <Link className='mx-2 text-gray-700' href={'/'}>
+        <p className='mx-2 text-gray-700'>
       <svg className='mb-5' width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 17V15.2222C15 14.2792 14.6313 13.3748 13.9749 12.708C13.3185 12.0412 12.4283 11.6666 11.5 11.6666H4.5C3.57174 11.6666 2.6815 12.0412 2.02513 12.708C1.36875 13.3748 1 14.2792 1 15.2222V17" stroke="black" stroke-opacity="0.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8 8.11111C9.933 8.11111 11.5 6.51923 11.5 4.55556C11.5 2.59188 9.933 1 8 1C6.067 1 4.5 2.59188 4.5 4.55556C4.5 6.51923 6.067 8.11111 8 8.11111Z" stroke="black" stroke-opacity="0.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-        </Link>
-    <Link className='mx-2 text-gray-700' href={'/'}>Account</Link>
+        </p>
+       { !session ?
+       <Link className='mx-2 text-gray-700' href={'/login'}>Account</Link>:
+       <button onClick={signOut} className='mx-2 text-gray-700 mb-4'>sign out</button>
+       }
         <Link className='mx-2 text-gray-700' href={'/'}>Cart</Link>
 
       </div>
