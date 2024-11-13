@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import IndexHeader from "@/components/IndexHeader";
+import { cookies } from "next/headers";
+import { supabaseServerClient } from "@/api/config";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
   title: "Minimal Shopping",
   description: "Online Shop",
 };
+
 
 export default function RootLayout({
   children,

@@ -2,12 +2,19 @@
 import { supabaseClient } from '@/api/config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import AddPortal from './AddPortal'
 
 
 
 const IndexHeader = () => {
 
-  
+  const [cardPortal, setCardPortal] = useState(false)
+  const showCard =()=>{
+    setCardPortal(!cardPortal)
+  }
+// console.log(product)
+
+
   const [session, setSession] = useState(() => { 
     const savedSession = localStorage.getItem('supabaseSession');
      return savedSession ? JSON.parse(savedSession) : false; });
@@ -19,7 +26,7 @@ const IndexHeader = () => {
             else if (event === "SIGNED_OUT")
                { setSession(false);
                  localStorage.removeItem('supabaseSession'); } }); 
-                 return () => { subscription?.subscribe(); }; },
+                 return () => { subscription?.unsubscribe(); }; },
                   []);
   return (
     <>
@@ -67,7 +74,7 @@ const IndexHeader = () => {
        <Link className='mx-2 text-gray-700' href={'/login'}>Account</Link>:
        <Link className='mx-2 text-gray-700' href={'/dashboard'}>Account</Link>
        }
-        <Link className='mx-2 text-gray-700' href={'/'}>Cart</Link>
+        <button className='mx-2 text-gray-700 mb-3 ml-3' >Cart</button>
 
       </div>
 
@@ -75,6 +82,7 @@ const IndexHeader = () => {
       </div>
       </div>
     </section>
+      {/* <AddPortal product={product} cardPortal setCardPortal onClose={()=> setCardPortal(true)}/> */}
     </>
   )
 }
