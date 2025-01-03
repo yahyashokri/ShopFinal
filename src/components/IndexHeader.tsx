@@ -2,16 +2,16 @@
 import { supabaseClient } from '@/api/config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import AddPortal from './AddPortal'
+import { useStore } from './zustand'
 
 
 
 const IndexHeader = () => {
 
-  const [cardPortal, setCardPortal] = useState(false)
-  const showCard =()=>{
-    setCardPortal(!cardPortal)
-  }
+  // const [cardPortal, setCardPortal] = useState(false)
+  // const showCard =()=>{
+  //   setCardPortal(!cardPortal)
+  // }
 // console.log(product)
 
 
@@ -74,7 +74,7 @@ const IndexHeader = () => {
        <Link className='mx-2 text-gray-700' href={'/login'}>Account</Link>:
        <Link className='mx-2 text-gray-700' href={'/dashboard'}>Account</Link>
        }
-        <button className='mx-2 text-gray-700 mb-3 ml-3' >Cart</button>
+        <button className='mx-2 text-gray-700 mb-3 ml-3' onClick={useStore((state) => state.setShowCardPortal)} >Cart</button>
 
       </div>
 
@@ -82,7 +82,7 @@ const IndexHeader = () => {
       </div>
       </div>
     </section>
-      {/* <AddPortal product={product} cardPortal setCardPortal onClose={()=> setCardPortal(true)}/> */}
+      {/* <AddPortal   onClose={()=> setCardPortal(true)}/> */}
     </>
   )
 }

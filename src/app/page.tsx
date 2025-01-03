@@ -1,9 +1,11 @@
 import { supabaseServerClient } from '@/api/config'
+import AddCardModal from '@/components/AddCardModal'
 import AddPortal from '@/components/AddPortal'
 import ProductCard from '@/components/ProductCard'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
 import React from 'react'
+
 
 const page = async () => {
   const cookieStore = cookies()
@@ -11,9 +13,7 @@ const page = async () => {
   const { data: productList, error } = await supabase.from('products').select('*')
   const { data: users} = await supabase.from('users').select('id')
   const { data: cardArr} = await supabase.from('card').select('*')
-  const user = users[0]?.id
-  console.log(cardArr)
-
+  const user = users?.[0]?.id ?? 'defaultId';
   if (error) {
     console.error('Error fetching product list:', error)
     return <div>Error loading products</div>
@@ -45,13 +45,16 @@ const page = async () => {
                   description={product.description}
                     price={product.price} 
                     rating={product.rating}
-                    stock={product.stock} /> 
+                    stock={product.stock}
+                     /> 
               </div>
             ))
           ) : (
             <p>No products available</p>
           )}
           <AddPortal cardArr={cardArr}/>
+          <AddCardModal/>
+
           </div>
         </div>
       </div>
