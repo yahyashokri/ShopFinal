@@ -7,4 +7,7 @@ export const useStore = create((set) => ({
   setShowAddCard: () => set((state) => ({ showAddCard: !state.showAddCard })),
   product: { user: null, pid: null, image: null, title: null, price: null, description: null, rating: null, category: null },
   setProduct: (product) => set({ product }),
+  // editProduct: {id: null, quantity: null},
+  // setEditProduct: (editProduct) => set({ editProduct }),
+
 }));

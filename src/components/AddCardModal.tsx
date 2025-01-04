@@ -62,13 +62,13 @@ const AddCardModal = () => {
             <div className="p-8">
               <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{product.title}</div>
               <p className="block mt-1 text-lg leading-tight font-medium text-black">{product.description}</p>
-              <p className="mt-2 text-gray-500">Organic Cotton, Fair Trade quality</p>
               <div className="flex items-center mt-2">
-                <div className="text-yellow-500">
-                  <span>★ ★ ★ ☆ ☆</span>
-                </div>
-                <span className="ml-2 text-gray-600">(3.5)</span>
-              </div>
+              {Array.from({ length: 5 }, (_, i) => (
+                <span key={i} className={`inline-block ${i < product.rating ? 'text-yellow-500' : 'text-gray-300'} text-lg`}>
+                  ★
+                 </span>
+                 ))}
+                 </div>
               <div className="mt-4">
                 <span className="text-slate-800 text-2xl font-bold">${product.price * quantity}</span>
               </div>

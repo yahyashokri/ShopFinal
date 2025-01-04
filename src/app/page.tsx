@@ -18,6 +18,9 @@ const page = async () => {
     console.error('Error fetching product list:', error)
     return <div>Error loading products</div>
   }
+  console.log(cardArr)
+
+  
 
   return (
     <div className='w-screen h-full bg-white flex justify-center max-w-screen'>
