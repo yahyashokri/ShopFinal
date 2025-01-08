@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.red-like-svg path {
+  fill: red;
+  stroke: red;
+}
+
+.red-like-svg:active {
+  transform: scale(1.2);
+}

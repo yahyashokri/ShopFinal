@@ -23,7 +23,7 @@ const page = async () => {
   
 
   return (
-    <div className='w-screen h-full bg-white flex justify-center max-w-screen'>
+    <div className='w-full h-full bg-white flex justify-center max-w-full'>
       <div className='w-10/12 h-full bg-gray-100 flex justify-center'>
         <div className='w-[1050px] h-full bg-gray-100 '>
           <Image
