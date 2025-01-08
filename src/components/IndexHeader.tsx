@@ -7,7 +7,8 @@ import { useStore } from './zustand'
 
 
 const IndexHeader = () => {
-
+    const togglePortal = useStore((state) => state.setShowCardPortal);
+  
   // const [cardPortal, setCardPortal] = useState(false)
   // const showCard =()=>{
   //   setCardPortal(!cardPortal)
@@ -74,7 +75,12 @@ const IndexHeader = () => {
        <Link className='mx-2 text-gray-700' href={'/login'}>Account</Link>:
        <Link className='mx-2 text-gray-700' href={'/dashboard'}>Account</Link>
        }
-        <button className='mx-2 text-gray-700 mb-3 ml-3' onClick={useStore((state) => state.setShowCardPortal)} >Cart</button>
+       { !session ? 
+       <Link className='mx-2 text-gray-700 mb-3 ml-3' href={'/login'}>Card</Link>:
+       <button className='mx-2 text-gray-700 mb-3 ml-3' onClick={togglePortal} >Card</button>
+
+      }
+        
 
       </div>
 

@@ -2,6 +2,7 @@
 import { supabaseClient } from '@/api/config';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react'
+import { useStore } from './zustand';
 
 const Dashboard = (users, error ) => {
     const router = useRouter()
@@ -15,7 +16,8 @@ const Dashboard = (users, error ) => {
     const user = users.user[0];
     const fullName = user["full-name"];
     const address = user.Address
-
+    const transfer = useStore((state) => state.setUser);
+    transfer({name: fullName, address: address})
     const phoneRef = useRef(null);
     const fullNameRef = useRef(null);
     const addressRef = useRef(null);

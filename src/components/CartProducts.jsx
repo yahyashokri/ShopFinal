@@ -2,8 +2,9 @@ import { supabaseClient } from '@/api/config';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 
-const CartProducts = ({ product }) => {
+const CartProducts = ({ product , productLength , setProductLength , setTotalPrice , totalPrice }) => {
   const [cartProduct, setCartProduct] = React.useState(null);
+
   
   useEffect(() => {
     if (product) {
@@ -18,6 +19,8 @@ const CartProducts = ({ product }) => {
     .delete()
     .eq('id', cartProduct.id)
     console.log(error)
+    setProductLength(productLength - 1)
+    setTotalPrice(totalPrice - (cartProduct.price * cartProduct.quantity))
   }
 
   const increaseQuantity= async() =>{
@@ -34,6 +37,7 @@ const CartProducts = ({ product }) => {
     .eq('id', cartProduct.id)
     .select()
     console.log(data , error)
+   setTotalPrice(totalPrice + cartProduct.price)
   }
   const decreaseQuantity= async() =>{
     setCartProduct((prevProduct) => {
@@ -57,7 +61,9 @@ const CartProducts = ({ product }) => {
   .delete()
   .eq('id', cartProduct.id)
   console.log(error)
+  setProductLength(productLength - 1)
   }
+  setTotalPrice(totalPrice - cartProduct.price)
 }
 
   if (!cartProduct) {
@@ -91,7 +97,7 @@ const CartProducts = ({ product }) => {
           </div>
           <span className="text-2xl font-bold mt-2 block">${cartProduct.price * cartProduct.quantity}</span>
           {/* <p className="text-gray-600 mt-1">Quantity: {cartProduct.quantity}</p> */}
-          <h5>{cartProduct.size}</h5>
+          <h5>Size: {cartProduct.size}</h5>
         </div>
         <div className='flex justify-end'>
         <button

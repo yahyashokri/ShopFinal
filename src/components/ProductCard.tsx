@@ -2,6 +2,7 @@
 import { supabaseClient } from '@/api/config';
 import Image from 'next/image';
 import { useStore } from './zustand';
+import { useEffect, useState } from 'react';
 
 
 interface ProductCardProps {
@@ -20,6 +21,21 @@ interface ProductCardProps {
 
 
 const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, price, description, rating, category, stock, card }) => {
+
+   const [session, setSession] = useState(() => { 
+      const savedSession = localStorage.getItem('supabaseSession');
+       return savedSession ? JSON.parse(savedSession) : false; });
+        useEffect(() => { 
+          const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event) => 
+            { if (event === "SIGNED_IN")
+           { setSession(true);
+             localStorage.setItem('supabaseSession', JSON.stringify(true)); }
+              else if (event === "SIGNED_OUT")
+                 { setSession(false);
+                   localStorage.removeItem('supabaseSession'); } }); 
+                   return () => { subscription?.unsubscribe(); }; },
+                    []);
+
   const setProduct = useStore((state) => state.setProduct); 
   const setShowAddCard = useStore((state) => state.setShowAddCard);
     const thisProduct =  {
@@ -34,12 +50,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
     }
 
     const useAddProduct = () => {
-      setProduct(thisProduct);
-      setShowAddCard();
-      console.log(useStore.getState().product); 
-      console.log(thisProduct);
+      if (session)
+      {setProduct(thisProduct)
+      setShowAddCard()
+      console.log(useStore.getState().product)
+      console.log(thisProduct)}
+      else{ alert('Please Log in to your Account first') }
+      
      };
-  const addProduct = async () =>{
+  // const addProduct = async () =>{
 
       // if (card.map((item)=>{
       //   if(item.pid == pid) return true
@@ -55,24 +74,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
 
       // }
       // else{
-        const { data, error } = await supabaseClient
-        .from('card')
-      .insert([ 
-        { 
-          uid: user,
-          pid: pid,
-          title: title || '',
-          category: category || '',
-          imageurl: image || '',
-          price: price || 0,
-          rating: rating || 0,
-          description: description || '',}
-        ])
-        .select()
-        if (error?.code == 42501) return alert('Please log in to your account to continue!')
-          console.log(data , error)
+      //   const { data, error } = await supabaseClient
+      //   .from('card')
+      // .insert([ 
+      //   { 
+      //     uid: user,
+      //     pid: pid,
+      //     title: title || '',
+      //     category: category || '',
+      //     imageurl: image || '',
+      //     price: price || 0,
+      //     rating: rating || 0,
+      //     description: description || '',}
+      //   ])
+      //   .select()
+      //   if (error?.code == 42501) return alert('Please log in to your account to continue!')
+      //     console.log(data , error)
       // }
-    }
+    // }
   return (
     <div className="max-w-sm rounded overflow-hidden my-6 relative">
       <Image className="w-[260] h-[260] " src={image} alt={title} width={260} height={260} />

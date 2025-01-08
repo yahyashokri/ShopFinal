@@ -13,12 +13,12 @@ const page = async () => {
   const { data: productList, error } = await supabase.from('products').select('*')
   const { data: users} = await supabase.from('users').select('id')
   const { data: cardArr} = await supabase.from('card').select('*')
+  const { data: usersInfo } = await supabase.from('users').select('*')
   const user = users?.[0]?.id ?? 'defaultId';
   if (error) {
     console.error('Error fetching product list:', error)
     return <div>Error loading products</div>
   }
-  console.log(cardArr)
 
   
 
@@ -55,7 +55,7 @@ const page = async () => {
           ) : (
             <p>No products available</p>
           )}
-          <AddPortal cardArr={cardArr}/>
+          <AddPortal usersInfo={usersInfo}/>
           <AddCardModal/>
 
           </div>

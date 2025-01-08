@@ -1,7 +1,7 @@
 'use client';
 import ReactDOM from 'react-dom';
 import { useStore } from './zustand';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { supabaseClient } from '@/api/config';
 
@@ -11,6 +11,8 @@ const AddCardModal = () => {
   const product = useStore((state) => state.product);
 
   const [quantity, setQuantity] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
+  const [animationClass, setAnimationClass] = useState('translate-x-full');
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -22,9 +24,11 @@ const AddCardModal = () => {
     }
   };
 
-    const [selectedSize, setSelectedSize] = useState('S');
-    const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
-     const handleSizeClick = (size) => { setSelectedSize(size);}
+  const [selectedSize, setSelectedSize] = useState('S');
+  const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  const handleSizeClick = (size) => {
+    setSelectedSize(size);
+  }
 
   const addProduct = async () => {
     const { data, error } = await supabaseClient
@@ -48,12 +52,23 @@ const AddCardModal = () => {
     console.log(data, error);
   };
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      setIsMounted(true);
+      setTimeout(() => setAnimationClass('translate-x-0'), 10); // Add slight delay to ensure initial render is complete
+    } else {
+      setAnimationClass('translate-x-full');
+      const timer = setTimeout(() => setIsMounted(false), 500); // Wait for the animation to complete
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!isMounted && !isOpen) return null;
 
   return ReactDOM.createPortal(
     <>
       <div onClick={togglePortal} className='z-50 fixed top-0 left-0 right-0 bottom-0 bg-gray-600 opacity-65'></div>
-      <div className="z-50 w-[600px] mx-auto p-6 bg-white shadow-lg fixed top-0 bottom-0 right-0">
+      <div className={`z-50 w-[600px] p-6 bg-white shadow-lg fixed top-0 bottom-0 right-0 transform transition-transform duration-500 ${animationClass}`}>
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="md:flex">
             <div className="md:flex-shrink-0">
@@ -63,12 +78,12 @@ const AddCardModal = () => {
               <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{product.title}</div>
               <p className="block mt-1 text-lg leading-tight font-medium text-black">{product.description}</p>
               <div className="flex items-center mt-2">
-              {Array.from({ length: 5 }, (_, i) => (
-                <span key={i} className={`inline-block ${i < product.rating ? 'text-yellow-500' : 'text-gray-300'} text-lg`}>
-                  ★
-                 </span>
-                 ))}
-                 </div>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} className={`inline-block ${i < product.rating ? 'text-yellow-500' : 'text-gray-300'} text-lg`}>
+                    ★
+                  </span>
+                ))}
+              </div>
               <div className="mt-4">
                 <span className="text-slate-800 text-2xl font-bold">${product.price * quantity}</span>
               </div>
@@ -82,18 +97,21 @@ const AddCardModal = () => {
                 <p className="text-gray-600">Return Policy: Within 5 days of product delivery.</p>
               </div>
               <div className="mt-4">
-              <div className="flex gap-2">
-                 {sizes.map((size) => ( 
+                <div className="flex gap-2">
+                  {sizes.map((size) => (
                     <button key={size}
-                     onClick={() => handleSizeClick(size)}
-                      className={`w-10 h-10 border-2 rounded-full flex items-center justify-center font-bold ${selectedSize === size ? 'bg-orange-500 text-white' : 'bg-white text-orange-500'} border-orange-500`} >
-                         {size} </button> ))} </div>
+                      onClick={() => handleSizeClick(size)}
+                      className={`w-10 h-10 border-2 rounded-full flex items-center justify-center font-bold ${selectedSize === size ? 'bg-orange-500 text-white' : 'bg-white text-orange-500'} border-orange-500`}>
+                      {size}
+                    </button>
+                  ))}
+                </div>
                 <button
                   onClick={() => {
                     addProduct();
                     togglePortal();
                   }}
-                  className="mt-40 border border-customOrange text-customOrange  rounded-full px-4 py-2"
+                  className="mt-36 border border-customOrange text-customOrange rounded-full px-4 py-2"
                 >
                   Add to Cart
                 </button>
