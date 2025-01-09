@@ -31,7 +31,7 @@ const AddPortal: React.FC<Card> = ({ usersInfo }) => {
   const [fullName, setFullName] = useState()
   const [address, setAddress] = useState()
   const user = usersInfo[0];
-  console.log(usersInfo)
+  // console.log(usersInfo)
   useEffect(()=>{
   if (usersInfo.length !== 0) {
     // setUser(usersInfo[0])
@@ -123,10 +123,10 @@ if (products?.length < 1){ return ReactDom.createPortal(
             </div>
             <Image width={500} height={400} src={'https://pjereaeszrgxezwznwbw.supabase.co/storage/v1/object/public/logo/Product%20Info.png'} alt={'delivery limit'} />
           </section>
-          <section className='absolute left-2 bottom-2 right-96 h-[150px] mr-2 mt-2 border border-solid rounded-2xl border-gray-500 p-4'>
+          <section className='absolute flex left-2 bottom-2 right-96 h-[150px] mr-2 mt-2 border border-solid rounded-2xl border-gray-500 p-4'>
             <h2 className='text-xl font-extrabold text-gray-700 mb-4'>Delivery Information</h2>
             <p className='text-gray-600 mb-4'>Address: {address} | {fullName}</p>
-            <Link href={'/dashboard'} className="border border-customOrange text-customOrange rounded-full px-4 py-2">Edit</Link>
+            <Link href={'/dashboard'} className="border h-10 border-customOrange text-customOrange rounded-full px-4 py-2">Edit</Link>
           </section>
           {/* <button
             className='absolute -top-5 -right-5 w-8 h-8 rounded-full bg-gray-500 flex justify-center items-center'

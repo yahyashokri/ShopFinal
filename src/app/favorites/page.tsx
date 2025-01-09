@@ -10,7 +10,7 @@ import React from 'react'
 const page = async () => {
   const cookieStore = cookies()
   const supabase = supabaseServerClient(await cookieStore)
-  const { data: productList, error } = await supabase.from('products').select('*')
+  const { data: productList, error } = await supabase.from('Favorite').select('*')
   const { data: users} = await supabase.from('users').select('id')
   const { data: cardArr} = await supabase.from('card').select('*')
   const { data: usersInfo } = await supabase.from('users').select('*')
@@ -20,23 +20,19 @@ const page = async () => {
     return <div>Error loading products</div>
   }
 
-  
+  if (productList.length === 0) return(
+    <div className='w-full h-screen bg-white flex justify-center max-w-full'>
+    <div className='w-10/12 h-screen bg-gray-100 flex justify-center'>
+    <h2 className=' text-customOrange text-7xl'>No Products In Your Favorites</h2>
+      </div>
+    </div>
+  )
 
   return (
-    <div className='w-full h-full bg-white flex justify-center max-w-full'>
-      <div className='w-10/12 h-full bg-gray-100 flex justify-center'>
-        <div className='w-[1050px] h-full bg-gray-100 '>
-          <div className='w-full h-auto bg-gray-100 flex flex-col justify-center items-center'>
-          <h2 className='text-customOrange text-xl'>***This website is not designed to be responsive for mobile devices and is just a demo for showing my capabilities***</h2>
-          <h3 className='text-customOrange text-xl'>---Guest Account For Login: guest@test.com | password: 12345678---</h3>
-          </div>
-          <Image
-            className='h-auto'
-            src='https://pjereaeszrgxezwznwbw.supabase.co/storage/v1/object/public/Banner/ad-group.png'
-            alt='Banner'
-            width={1150}
-            height={360}
-          />
+    <div className='w-full h-screen bg-white flex justify-center max-w-full'>
+      <div className='w-10/12 h-screen bg-gray-100 flex justify-center'>
+        <div className='w-[1050px] h-screen bg-gray-100 '>
+ 
           <div className='flex flex-wrap justify-center'>
           {productList ? (
             productList.map((product) => (
@@ -45,7 +41,7 @@ const page = async () => {
                  card ={cardArr}
                  key={product.id}
                 user={user}
-                pid = {product.id}
+                pid = {product.pid}
                  image={product.imageurl}
                   title={product.title}
                   category={product.category}

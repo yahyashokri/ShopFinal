@@ -10,7 +10,7 @@ const dashboard = async () => {
   
 
   return (
-  <div className="w-screen h-screen">
+  <div className="w-full h-screen">
     <Dashboard user={users} error={error}/>
   </div>
   )

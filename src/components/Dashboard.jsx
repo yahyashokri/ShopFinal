@@ -57,7 +57,7 @@ const Dashboard = (users, error ) => {
     }
 
   return (
-    <div className='w-screen h-full bg-white flex justify-center max-w-screen'>
+    <div className='w-full h-full bg-white flex justify-center max-w-screen'>
     <div className="flex justify-center h-screen w-10/12 bg-gray-100">
        <div className="bg-white p-8 rounded shadow-md w-full max-w-sm  mt-12"> 
         <form>
