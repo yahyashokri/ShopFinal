@@ -3,7 +3,6 @@ import AddCardModal from '@/components/AddCardModal'
 import AddPortal from '@/components/AddPortal'
 import ProductCard from '@/components/ProductCard'
 import { cookies } from 'next/headers'
-import Image from 'next/image'
 import React from 'react'
 
 
@@ -41,14 +40,13 @@ const page = async () => {
                  card ={cardArr}
                  key={product.id}
                 user={user}
-                pid = {product.pid}
+                pid = {parseFloat(product.pid)}
                  image={product.imageurl}
                   title={product.title}
                   category={product.category}
                   description={product.description}
-                    price={product.price} 
-                    rating={product.rating}
-                    stock={product.stock}
+                  price={parseFloat(product.price)} 
+                  rating={parseFloat(product.rating)}
                      /> 
               </div>
             ))

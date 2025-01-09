@@ -4,6 +4,21 @@ import Image from 'next/image';
 import { useStore } from './zustand';
 import { useEffect, useState, useRef } from 'react';
 
+interface Product {
+  quantity: number;
+  added_at: string;
+  title: string;
+  category: string;
+  imageurl: string;
+  price: number;
+  rating: number;
+  description: string;
+  id: string;
+  pid: number;
+  uid: string | null;
+  size: string;
+}
+
 interface ProductCardProps {
   user: string;
   pid: number;
@@ -14,10 +29,25 @@ interface ProductCardProps {
   category: string | null;
   rating: number;
   stock: number;
-  card: any;
+  card: Product[];
 }
+// interface Favorite {
+//   category?: string;
+//   created_at?: string;
+//   description?: string;
+//   id?: number;
+//   imageurl?: string;
+//   pid?: number;
+//   price?: number;
+//   rating?: number;
+//   title?: string;
+//   uid?: string;
+// }
 
-const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, price, description, rating, category, stock, card }) => {
+
+
+
+const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, price, description, rating, category}) => {
   const [session, setSession] = useState(() => {
     const savedSession = localStorage.getItem('supabaseSession');
     return savedSession ? JSON.parse(savedSession) : false;
@@ -109,24 +139,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
   const likeProduct = async () => {
     const { data, error } = await supabaseClient
       .from('Favorite')
-      .insert([
-        {
-          uid: thisProduct.user,
-          pid: thisProduct.pid,
-          title: thisProduct.title || '',
-          category: thisProduct.category || '',
-          imageurl: thisProduct.image || '',
-          price: thisProduct.price || 0,
-          rating: thisProduct.rating || 0,
-          description: thisProduct.description || '',
-        }
-      ])
+      .insert({
+        uid: thisProduct.user,
+        pid: thisProduct.pid,
+        title: thisProduct.title || '',
+        category: thisProduct.category || '',
+        imageurl: thisProduct.image || '',
+        price: thisProduct.price || 0,
+        rating: thisProduct.rating || 0,
+        description: thisProduct.description || ''
+      })
       .select();
+  
     console.log(data, error);
     if (data) {
       setIsFavorite(true);
     }
   };
+  
+  
 
   const dislikeProduct = async () => {
     const { data, error } = await supabaseClient
@@ -141,7 +172,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
     }
   };
 
-  const addFavorite = async (event) => {
+  const addFavorite = async () => {
     if (!isFavorite) {
       await likeProduct();
     } else {

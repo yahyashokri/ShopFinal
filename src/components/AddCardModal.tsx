@@ -48,7 +48,7 @@ const AddCardModal = () => {
         }
       ])
       .select();
-    if (error && error?.code == 42501 && "22P02") return alert('Please log in to your account to continue!');
+    // if (error && error?.code == 42501 && "22P02") return alert('Please log in to your account to continue!');
     console.log(data, error);
   };
 

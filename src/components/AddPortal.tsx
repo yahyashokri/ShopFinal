@@ -22,14 +22,21 @@ interface Product {
   size: string;
 }
 
-interface Card {
-  cardArr: Product[] | null;
-}
+interface UserInfo { 
+  usersInfo:
+   { Address: string;
+     created_at: string;
+      email: string; 
+      "full-name": string;
+       id: string; 
+       phone: string;
+        role: string;
+       }[]; }
 
-const AddPortal: React.FC<Card> = ({ usersInfo }) => {
+const AddPortal: React.FC<UserInfo> = ({ usersInfo }) => {
   // const [user, setUser] = useState()
-  const [fullName, setFullName] = useState()
-  const [address, setAddress] = useState()
+  const [fullName, setFullName] = useState<string | undefined>(undefined)
+  const [address, setAddress] = useState<string>('');
   const user = usersInfo[0];
   // console.log(usersInfo)
   useEffect(()=>{
