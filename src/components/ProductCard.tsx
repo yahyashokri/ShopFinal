@@ -119,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
       });
     }
 
-  }, [favorites, pid, user]);
+  }, [favorites, pid, user , isFavorite]);
 
   useEffect(() => {
     fetchFavorites();
