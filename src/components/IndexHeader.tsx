@@ -15,20 +15,34 @@ const IndexHeader = () => {
   // }
 // console.log(product)
 
+  const [session, setSession] = useState(null);
 
-  const [session, setSession] = useState(() => { 
-    const savedSession = localStorage.getItem('supabaseSession');
-     return savedSession ? JSON.parse(savedSession) : false; });
-      useEffect(() => { 
-        const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event) => 
-          { if (event === "SIGNED_IN")
-         { setSession(true);
-           localStorage.setItem('supabaseSession', JSON.stringify(true)); }
-            else if (event === "SIGNED_OUT")
-               { setSession(false);
-                 localStorage.removeItem('supabaseSession'); } }); 
-                 return () => { subscription?.unsubscribe(); }; },
-                  []);
+  useEffect(() => {
+    // Ensure localStorage is accessed only on the client side
+    const savedSession = typeof window !== 'undefined' ? localStorage.getItem('supabaseSession') : null;
+    setSession(savedSession ? JSON.parse(savedSession) : false);
+
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        setSession(true);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('supabaseSession', JSON.stringify(true));
+        }
+      } else if (event === "SIGNED_OUT") {
+        setSession(false);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('supabaseSession');
+        }
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
+
+
   return (
     <>
     <section className='fixed top-0 z-20'>

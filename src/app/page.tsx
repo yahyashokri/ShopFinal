@@ -52,7 +52,6 @@ const page = async () => {
                   description={product.description}
                     price={product.price} 
                     rating={product.rating}
-                    stock={product.stock}
                      /> 
               </div>
             ))

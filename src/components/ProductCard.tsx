@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 'use client'
 import { supabaseClient } from '@/api/config';
 import Image from 'next/image';
@@ -28,7 +29,6 @@ interface ProductCardProps {
   description: string;
   category: string | null;
   rating: number;
-  stock: number;
   card: Product[];
 }
 // interface Favorite {
@@ -140,8 +140,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
     const { data, error } = await supabaseClient
       .from('Favorite')
       .insert({
-        uid: thisProduct.user,
-        pid: thisProduct.pid,
+        uid: thisProduct.user || '',
+        pid: thisProduct.pid || '',
         title: thisProduct.title || '',
         category: thisProduct.category || '',
         imageurl: thisProduct.image || '',
