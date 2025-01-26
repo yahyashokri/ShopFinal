@@ -1,4 +1,6 @@
 # Supabase
 .branches
 .temp
+# environment variables
 .env
+.env.local
