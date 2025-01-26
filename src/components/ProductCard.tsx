@@ -2,7 +2,7 @@
 'use client'
 import { supabaseClient } from '@/api/config';
 import Image from 'next/image';
-import { useStore } from './zustand';
+import { useStore } from './store';
 import { useEffect, useState, useRef } from 'react';
 
 interface Product {
@@ -135,20 +135,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ user, pid, image, title, pric
       alert('Please Log in to your Account first');
     }
   };
-
+const p:unknown = {
+  uid: thisProduct.user || '',
+  pid: thisProduct.pid || '',
+  title: thisProduct.title || '',
+  category: thisProduct.category || '',
+  imageurl: thisProduct.image || '',
+  price: thisProduct.price || 0,
+  rating: thisProduct.rating || 0,
+  description: thisProduct.description || ''
+}
   const likeProduct = async () => {
     const { data, error } = await supabaseClient
       .from('Favorite')
-      .insert({
-        uid: thisProduct.user || '',
-        pid: thisProduct.pid || '',
-        title: thisProduct.title || '',
-        category: thisProduct.category || '',
-        imageurl: thisProduct.image || '',
-        price: thisProduct.price || 0,
-        rating: thisProduct.rating || 0,
-        description: thisProduct.description || ''
-      })
+      .insert(p)
       .select();
   
     console.log(data, error);

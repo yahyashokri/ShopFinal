@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDom from 'react-dom';
 import CartProducts from './CartProducts';
-import { useStore } from './zustand';
+import { useStore } from './store';
 import { supabaseClient } from '@/api/config';
 import Image from 'next/image';
 import Link from 'next/link';

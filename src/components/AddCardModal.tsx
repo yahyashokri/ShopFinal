@@ -1,6 +1,6 @@
 'use client';
 import ReactDOM from 'react-dom';
-import { useStore } from './zustand';
+import { useStore } from './store';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { supabaseClient } from '@/api/config';

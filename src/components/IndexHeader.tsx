@@ -2,7 +2,7 @@
 import { supabaseClient } from '@/api/config'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useStore } from './zustand'
+import { useStore } from './store'
 
 
 
